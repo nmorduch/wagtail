@@ -1,8 +1,26 @@
+/* ===========================================================================*\
+   Larger dropdowns
+
+   ┌────────────────┬──────────────────────────────────────────────────────┐
+   │ Modifier       │ Purpose                                              │
+   │----------------│------------------------------------------------------│
+   │ &--button      │ Dropdowns which are also buttons, e.g in page editor │
+   │ &--dropup      │ Menu opens above the dropdown                        │
+   │ &--match-width │ Menu width matches the dropdown width                │
+   │ &--warning     │ Theme color: warning theme                           │
+   │ .white         │ Theme color: white (possibly to be deleted)          │
+   │ .is-open       │ State: dropdown is open                              │
+   └────────────────┴──────────────────────────────────────────────────────┘
+
+\* ===========================================================================*/
+
 .c-large-dropdown {
     $root: &;
 
     @include clearfix();
     position: relative;
+
+    // start dropdown main button styles
 
     input[type=submit],
     input[type=reset],
@@ -13,21 +31,42 @@
         display: block;
         width: 100%;
         height: 3em;
-        line-height: 3em;
+        line-height: inherit; // not sure this line is necessary
         text-align: left;
         padding-left: 1em;
         float: left;
     }
 
-    input[type=submit],
-    input[type=reset],
-    input[type=button],
-    button {
-        line-height: inherit;
+    // Overrides shared styles just above
+    .button {
+        line-height: 3em;
     }
+
+    &--button.is-open {
+        > input[type=button],
+        > input[type=submit],
+        > button,
+        > .button {
+            border-radius: 3px 3px 0 0;
+        }
+    }
+
+    &--dropup.is-open {
+        > input[type=button],
+        > input[type=submit],
+        > button,
+        > .button {
+            border-radius: 0 0 3px 3px;
+        }
+    }
+
+    // end dropdown main button styles
+
+    // start ul styles
 
     ul {
         @include unlist();
+        @include transition(opacity 0.2s linear);
         background-color: $color-teal;
         position: absolute;
         overflow: hidden;
@@ -35,15 +74,62 @@
         left: -2000px;
         z-index: 500;
         opacity: 0;
+    }
 
-        li {
-            float: none;
-            border-color: rgba(255, 255, 255, 0.2);
-            border-style: solid;
-            border-width: 1px 0 0;
-            overflow: hidden;
+    &--match-width ul {
+        width: 100%;
+        min-width: 110px;
+    }
+
+    &.is-open ul {
+        box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.2);
+        opacity: 1;
+        left: 0;
+        display: block;
+    }
+
+    &--dropup.is-open ul {
+        box-shadow: 0 -3px 3px 0 rgba(0, 0, 0, 0.2);
+        top: auto;
+        bottom: 100%;
+    }
+
+    // end ul styles
+
+    // start li styles
+
+    li {
+        float: none;
+        border-color: rgba(255, 255, 255, 0.2);
+        border-style: solid;
+        border-width: 1px 0 0;
+        overflow: hidden;
+    }
+
+    &--match-width li {
+        white-space: nowrap;
+    }
+
+    &--dropup li {
+        border-width: 0 0 1px;
+    }
+
+    // end li styles
+
+    // These were nested under ul and I don't want to mess anything up
+    ul {
+        a,
+        input[type=submit],
+        input[type=reset],
+        input[type=button],
+        .button,
+        button {
+            border-radius: 0;
+            font-size: 0.95em;
+            -webkit-font-smoothing: auto;
         }
 
+        // See also shared styles just above
         a {
             box-sizing: border-box;
             white-space: nowrap;
@@ -58,37 +144,26 @@
             &:hover {
                 background-color: $color-teal-darker;
             }
+        }
 
-            &.icon {
-                padding-right: 5em;
+        .icon {
+            padding-right: 5em;
 
-                // stylelint-disable-next-line max-nesting-depth
-                &:before,
-                &:after {
-                    right: 1em;
-                }
-            }
-
-            &.shortcut {
-                padding-right: 7em;
+            &::before,
+            &::after {
+                right: 1em;
             }
         }
 
-        a,
-        input[type=submit],
-        input[type=reset],
-        input[type=button],
-        .button,
-        button {
-            border-radius: 0;
-            font-size: 0.95em;
-            -webkit-font-smoothing: auto;
+        .shortcut {
+            padding-right: 7em;
         }
 
         label {
             padding: 1.3em;
         }
 
+        // Not sure this is actually in use
         .kbd {
             position: absolute;
             right: 1em;
@@ -96,34 +171,7 @@
             font-size: 0.8em;
             color: rgba(0, 0, 0, 0.3);
         }
-
-    }
-
-    &.is-open ul {
-        box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.2);
-        opacity: 1;
-        left: 0;
-        display: block;
-    }
-
-    &--match-width ul {
-        width: 100%;
-        min-width: 110px;
-
-        li {
-            white-space: nowrap;
-        }
-    }
-
-    &--dropup ul {
-        box-shadow: 0 -3px 3px 0 rgba(0, 0, 0, 0.2);
-        top: auto;
-        bottom: 100%;
-
-        li {
-            border-width: 0 0 1px;
-        }
-    }
+    } // /ul
 
     &__toggle {
         color: $color-white;
@@ -138,98 +186,65 @@
         padding: 0 0.5em;
         text-align: center;
 
-        &:before,
-        &:after {
-            margin: 0;
-        }
-
-        &:before {
-            width: 1em;
-            font-size: 1.2rem;
-        }
-
-        &:hover {
+        &:hover,
+        #{$root}.is-open & {
             background-color: $color-teal-darker;
         }
-    }
 
-    &.is-open #{$root}__toggle {
-        background-color: $color-teal-darker;
-    }
-
-    // Styles for dropdowns which are also buttons e.g page editor
-    &--button {
-        #{$root}__toggle {
+        #{$root}--button &,
+        #{$root}--button.is-open & {
             border-radius: 0 3px 3px 0;
         }
 
-        &.is-open {
-            > input[type=button],
-            > input[type=submit],
-            > button,
-            > .button {
-                border-radius: 3px 3px 0 0;
-            }
-
-            #{$root}__toggle {
-                border-radius: 0 3px 0 0;
-            }
+        #{$root}--button.is-open#{$root}--dropup & {
+            border-radius: 0 0 3px;
         }
 
-    }
+        &::before,
+        &::after {
+            margin: 0;
+        }
 
-    &--dropup#{$root}--button {
-        &.is-open {
-            > input[type=button],
-            > input[type=submit],
-            > button,
-            > .button {
-                border-radius: 0 0 3px 3px;
-            }
-
-            #{$root}__toggle {
-                border-radius: 0 0 3px;
-            }
+        &::before {
+            width: 1em;
+            font-size: 1.2rem;
         }
     }
-}
 
-$root-to-be-replaced: '.c-large-dropdown';
+    //=====================================================================
+    // THEMING
+    //=====================================================================
 
-// I don't see this in any HTML files.
-#{$root-to-be-replaced}.white {
-    ul {
-        background-color: $color-white;
+    // I don't see this in any HTML files.
+    &.white {
+        ul {
+            background-color: $color-white;
 
-        li {
-            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            li {
+                border-top: 1px solid rgba(0, 0, 0, 0.1);
+            }
+
+            a {
+                color: $color-grey-2;
+
+                &:hover {
+                    background-color: $color-grey-3;
+                }
+            }
+        }
+    }
+
+    &--warning {
+        ul {
+            background-color: $color-button-warning;
         }
 
-        a {
-            color: $color-grey-2;
+        #{$root}__toggle {
+            background-color: $color-button-warning;
 
             &:hover {
-                background-color: $color-grey-3;
+                background-color: $color-button-warning-hover;
             }
         }
     }
-}
-
-#{$root-to-be-replaced}--warning {
-    ul {
-        background-color: $color-button-warning;
-    }
-
-    #{$root-to-be-replaced}__toggle {
-        background-color: $color-button-warning;
-
-        &:hover {
-            background-color: $color-button-warning-hover;
-        }
-    }
-}
-
-// Transitions
-#{$root-to-be-replaced} ul {
-    @include transition(opacity 0.2s linear);
 }
