@@ -21,7 +21,6 @@
     position: relative;
 
     // start dropdown main button styles
-
     input[type=submit],
     input[type=reset],
     input[type=button],
@@ -59,11 +58,9 @@
             border-radius: 0 0 3px 3px;
         }
     }
-
     // end dropdown main button styles
 
     // start ul styles
-
     ul {
         @include unlist();
         @include transition(opacity 0.2s linear);
@@ -93,11 +90,9 @@
         top: auto;
         bottom: 100%;
     }
-
     // end ul styles
 
     // start li styles
-
     li {
         float: none;
         border-color: rgba(255, 255, 255, 0.2);
@@ -113,7 +108,6 @@
     &--dropup li {
         border-width: 0 0 1px;
     }
-
     // end li styles
 
     // These were nested under ul and I don't want to mess anything up
@@ -227,6 +221,7 @@
             a {
                 color: $color-grey-2;
 
+                // stylelint-disable-next-line max-nesting-depth
                 &:hover {
                     background-color: $color-grey-3;
                 }
