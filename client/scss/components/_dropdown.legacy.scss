@@ -1,4 +1,6 @@
-.dropdown {
+.c-large-dropdown {
+    $root: &;
+
     @include clearfix();
     position: relative;
 
@@ -97,14 +99,14 @@
 
     }
 
-    &.open ul {
+    &.is-open ul {
         box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.2);
         opacity: 1;
         left: 0;
         display: block;
     }
 
-    &.match-width ul {
+    &--match-width ul {
         width: 100%;
         min-width: 110px;
 
@@ -113,7 +115,7 @@
         }
     }
 
-    &.dropup ul {
+    &--dropup ul {
         box-shadow: 0 -3px 3px 0 rgba(0, 0, 0, 0.2);
         top: auto;
         bottom: 100%;
@@ -123,7 +125,7 @@
         }
     }
 
-    .dropdown-toggle {
+    &__toggle {
         color: $color-white;
         text-transform: uppercase;
         background-color: $color-teal;
@@ -151,17 +153,17 @@
         }
     }
 
-    &.open .dropdown-toggle {
+    &.is-open #{$root}__toggle {
         background-color: $color-teal-darker;
     }
 
     // Styles for dropdowns which are also buttons e.g page editor
-    &.dropdown-button {
-        .dropdown-toggle {
+    &--button {
+        #{$root}__toggle {
             border-radius: 0 3px 3px 0;
         }
 
-        &.open {
+        &.is-open {
             > input[type=button],
             > input[type=submit],
             > button,
@@ -169,14 +171,15 @@
                 border-radius: 3px 3px 0 0;
             }
 
-            .dropdown-toggle {
+            #{$root}__toggle {
                 border-radius: 0 3px 0 0;
             }
         }
+
     }
 
-    &.dropup.dropdown-button {
-        &.open {
+    &--dropup#{$root}--button {
+        &.is-open {
             > input[type=button],
             > input[type=submit],
             > button,
@@ -184,14 +187,17 @@
                 border-radius: 0 0 3px 3px;
             }
 
-            .dropdown-toggle {
+            #{$root}__toggle {
                 border-radius: 0 0 3px;
             }
         }
     }
 }
 
-.dropdown.white {
+$root-to-be-replaced: '.c-large-dropdown';
+
+// I don't see this in any HTML files.
+#{$root-to-be-replaced}.white {
     ul {
         background-color: $color-white;
 
@@ -209,12 +215,12 @@
     }
 }
 
-.dropdown.warning {
+#{$root-to-be-replaced}--warning {
     ul {
         background-color: $color-button-warning;
     }
 
-    .dropdown-toggle {
+    #{$root-to-be-replaced}__toggle {
         background-color: $color-button-warning;
 
         &:hover {
@@ -224,6 +230,6 @@
 }
 
 // Transitions
-.dropdown ul {
+#{$root-to-be-replaced} ul {
     @include transition(opacity 0.2s linear);
 }

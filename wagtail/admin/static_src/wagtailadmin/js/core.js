@@ -188,21 +188,21 @@ $(function() {
         $('.tab-nav a[href="' + $(this).attr('href') + '"]').trigger('click');
     });
 
-    $('.dropdown').each(function() {
+    $('.c-large-dropdown').each(function() {
         var $dropdown = $(this);
 
-        $('.dropdown-toggle', $dropdown).on('click', function(e) {
+        $('.c-large-dropdown__toggle', $dropdown).on('click', function(e) {
             e.stopPropagation();
-            $dropdown.toggleClass('open');
+            $dropdown.toggleClass('is-open');
 
-            if ($dropdown.hasClass('open')) {
+            if ($dropdown.hasClass('is-open')) {
                 // If a dropdown is opened, add an event listener for document clicks to close it
                 $(document).on('click.dropdown.cancel', function(e) {
                     var relTarg = e.relatedTarget || e.toElement;
 
                     // Only close dropdown if the click target wasn't a child of this dropdown
                     if (!$(relTarg).parents().is($dropdown)) {
-                        $dropdown.removeClass('open');
+                        $dropdown.removeClass('is-open');
                         $(document).off('click.dropdown.cancel');
                     }
                 });
